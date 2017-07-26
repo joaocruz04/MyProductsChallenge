@@ -16,11 +16,13 @@ public class ProductsPresenterImpl extends ProductsPresenter {
     private GetProductsUseCase productsUseCase;
     private int currentPage;
     private ProductsView view;
+    private boolean loading;
 
     @Inject
     public ProductsPresenterImpl(GetProductsUseCase productsUseCase) {
         this.productsUseCase = productsUseCase;
         currentPage = 0;
+        loading = false;
     }
 
     @Override
@@ -31,40 +33,49 @@ public class ProductsPresenterImpl extends ProductsPresenter {
     @Override
     public void unregisterView() {
         this.view = null;
+        unregisterObservers();
     }
 
     @Override
     public void loadMore() {
-        Observer<ProductsResponse> observer = new Observer<ProductsResponse>(){
+        if (!loading) {
+            loading = true;
+            Observer<ProductsResponse> observer = new Observer<ProductsResponse>() {
 
-            @Override
-            public void onSubscribe(Disposable d) {
-                System.out.println("SUBSCRIBE");
-            }
+                @Override
+                public void onSubscribe(Disposable d) {
 
-            @Override
-            public void onNext(ProductsResponse productsResponse) {
-                if (view!=null) {
-                    view.updateWithProducts(productsResponse.trendProducts);
                 }
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("ERROR");
-            }
+                @Override
+                public void onNext(ProductsResponse productsResponse) {
+                    if (view != null
+                            && productsResponse != null
+                            && productsResponse.trendProducts != null
+                            && productsResponse.trendProducts.products != null
+                            && productsResponse.trendProducts.products.size() > 0) {
 
-            @Override
-            public void onComplete() {
-                System.out.println("COMPLETE");
-            }
-        };
+                        view.updateWithProducts(productsResponse.trendProducts);
+                        currentPage++;
+                    }
+                }
 
-        productsUseCase.withPage(currentPage).build().subscribe(observer);
+                @Override
+                public void onError(Throwable e) {loading = false;}
+
+                @Override
+                public void onComplete() {
+                    loading = false;
+                }
+            };
+
+            productsUseCase.withPage(currentPage).build().subscribe(observer);
+        }
 
     }
 
-
-
-
+    @Override
+    public boolean isLoading() {
+        return loading;
+    }
 }

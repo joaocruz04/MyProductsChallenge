@@ -3,6 +3,8 @@ package pt.joaocruz.myproductschallenge.products;
 import java.util.ArrayList;
 
 import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by jcruz on 26.07.17.
@@ -10,23 +12,22 @@ import io.reactivex.Observer;
 
 public abstract class ProductsPresenter {
 
-    private ArrayList<Observer<?>> observers;
+    private CompositeDisposable compositeDisposable;
 
-    protected void addObserver(Observer<?> observer) {
-        if (observers == null)
-            observers = new ArrayList<>();
-        if (!observers.contains(observer))
-            observers.add(observer);
+    protected void addObserver(Disposable observer) {
+        if (compositeDisposable == null)
+            compositeDisposable = new CompositeDisposable();
+        compositeDisposable.add(observer);
     }
 
-    protected ArrayList<Observer<?>> getObservers() {
-        if (observers==null)
-            observers = new ArrayList<>();
-        return observers;
+    protected void unregisterObservers() {
+        if (compositeDisposable!=null)
+            compositeDisposable.clear();
     }
 
     public abstract void registerView(ProductsView view);
     public abstract void loadMore();
     public abstract void unregisterView();
+    public abstract boolean isLoading();
 
 }

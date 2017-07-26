@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import pt.joaocruz.myproductschallenge.App;
@@ -19,6 +21,9 @@ public class ProductsActivity extends AppCompatActivity implements ProductsView 
 
     private RecyclerView recyclerView;
     private GridAdapter adapter;
+    private FooterGridLayoutManager layoutManager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +37,35 @@ public class ProductsActivity extends AppCompatActivity implements ProductsView 
     @Override
     public void updateWithProducts(TrendProducts trendProducts) {
         if (adapter==null) {
-            adapter = new GridAdapter(trendProducts.products);
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            adapter = new GridAdapter(new ArrayList<>(trendProducts.products.subList(0, 10)));
+            layoutManager = new FooterGridLayoutManager(this, 2, adapter);
+            recyclerView.setLayoutManager(layoutManager);
             recyclerView.addItemDecoration(new GridAdapter.GridItemDecorator(10)); // Improvement: calculate from dip.
+            if (trendProducts.currentPage == trendProducts.numberOfPages-1)
+                adapter.setReachedEndOfList();
             recyclerView.setAdapter(adapter);
+            recyclerView.addOnScrollListener(scrollListener);
         } else {
-            adapter.addProducts(trendProducts.products);
+            if (trendProducts.currentPage == trendProducts.numberOfPages-1)
+                adapter.setReachedEndOfList();
+            adapter.addProducts(trendProducts.products.subList(0,10));
             adapter.update();
         }
     }
+
+    RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+            if (((pastVisibleItems + visibleItemCount) >= totalItemCount-4) && !presenter.isLoading()) {
+                presenter.loadMore();
+            }
+        }
+    };
 
     @Override
     protected void onStart() {

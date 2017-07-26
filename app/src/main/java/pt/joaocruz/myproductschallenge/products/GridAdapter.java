@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pt.joaocruz.myproductschallenge.R;
 import pt.joaocruz.myproductschallenge.domain.Product;
@@ -18,15 +19,24 @@ import pt.joaocruz.myproductschallenge.domain.Product;
 public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Product> products;
+    private boolean endOfListReached;
+    public static final int GRID_ITEM_TYPE = 1;
+    public static final int FOOTER_TYPE = 2;
 
     public GridAdapter(ArrayList<Product> products) {
         this.products = products;
+        this.endOfListReached = false;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, null);
-        ProductViewHolder holder = new ProductViewHolder(parent.getContext(), view);
+        int resID = viewType==GRID_ITEM_TYPE ? R.layout.grid_item : R.layout.grid_footer;
+        View view = LayoutInflater.from(parent.getContext()).inflate(resID, null);
+        RecyclerView.ViewHolder holder;
+        if (viewType == GRID_ITEM_TYPE)
+            holder = new ProductViewHolder(parent.getContext(), view);
+        else
+            holder = new FooterViewHolder(view);
         return holder;
     }
 
@@ -39,19 +49,34 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return products!=null ? products.size() : 0;
+        if (products==null)
+            return 0;
+        else
+            return endOfListReached ? products.size() : products.size()+1;
     }
 
     public void update() {
         notifyDataSetChanged();
     }
 
-    public void addProducts(ArrayList<Product> products) {
-        if (this.products!=null)
-            this.products = products;
+    public void addProducts(List<Product> products) {
+        if (this.products==null)
+            this.products = new ArrayList<>(products);
         else
             this.products.addAll(products);
 
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (endOfListReached)
+            return 1;
+        else
+            return (position == products.size() && position>0) ? 2 : 1;
+    }
+
+    public void setReachedEndOfList() {
+        this.endOfListReached = true;
     }
 
     static class GridItemDecorator extends RecyclerView.ItemDecoration {
@@ -71,4 +96,6 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         }
     }
+
+
 }
