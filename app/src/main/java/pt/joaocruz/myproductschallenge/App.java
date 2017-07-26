@@ -1,11 +1,14 @@
 package pt.joaocruz.myproductschallenge;
 
 import android.app.Application;
+import android.content.Context;
 
 import pt.joaocruz.myproductschallenge.dagger.AppComponent;
 import pt.joaocruz.myproductschallenge.dagger.AppModule;
 import pt.joaocruz.myproductschallenge.dagger.DaggerAppComponent;
 import pt.joaocruz.myproductschallenge.dagger.OnlineServicesModule;
+import pt.joaocruz.myproductschallenge.dagger.PresentersModule;
+import pt.joaocruz.myproductschallenge.dagger.SchedulersModule;
 import pt.joaocruz.myproductschallenge.dagger.UseCaseModule;
 
 /**
@@ -24,7 +27,11 @@ public class App extends Application {
                 .appModule(new AppModule(this))
                 .useCaseModule(new UseCaseModule())
                 .onlineServicesModule(new OnlineServicesModule())
+                .presentersModule(new PresentersModule())
+                .schedulersModule(new SchedulersModule())
                 .build();
+
+
     }
 
 
@@ -32,6 +39,9 @@ public class App extends Application {
         return appComponent;
     }
 
+    public static App getInstance(Context context) {
+        return (App) context.getApplicationContext();
+    }
 
 
 }

@@ -8,20 +8,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class Product {
 
-    long id;
-    String name;
-    String price;
-    String msrp;
-    String sku;
+    public long id;
+    public String name;
+    public String price;
+    public String msrp;
+    public String sku;
     @SerializedName("enabled_from")
-    String enabledFrom;
+    public String enabledFrom;
     @SerializedName("show_msrp")
-    String showMsrp;
+    public String showMsrp;
     @SerializedName("show_msrp_index")
-    int showMsrpIndex;
-    int discount;
+    public int showMsrpIndex;
+    public int discount;
     @SerializedName("thumbnail_path")
-    String thumbnailPath;
+    public String thumbnailPath;
 
     public Product() {}
 

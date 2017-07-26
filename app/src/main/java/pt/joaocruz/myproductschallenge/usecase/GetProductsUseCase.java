@@ -4,6 +4,9 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import pt.joaocruz.myproductschallenge.dagger.qualifiers.MainThreadScheduler;
+import pt.joaocruz.myproductschallenge.dagger.qualifiers.NewThreadScheduler;
+import pt.joaocruz.myproductschallenge.domain.ProductsResponse;
 import pt.joaocruz.myproductschallenge.domain.TrendProducts;
 import pt.joaocruz.myproductschallenge.online.OnlineDataManager;
 
@@ -19,7 +22,7 @@ public class GetProductsUseCase {
     private Scheduler newThreadScheduler;
 
     @Inject
-    public GetProductsUseCase(OnlineDataManager dataManager, Scheduler mainScheduler, Scheduler newThreadScheduler) {
+    public GetProductsUseCase(OnlineDataManager dataManager, @MainThreadScheduler Scheduler mainScheduler, @NewThreadScheduler Scheduler newThreadScheduler) {
         this.dataManager = dataManager;
         this.mainScheduler = mainScheduler;
         this.newThreadScheduler = newThreadScheduler;
@@ -30,7 +33,7 @@ public class GetProductsUseCase {
         return this;
     }
 
-    public Observable<TrendProducts> build() {
+    public Observable<ProductsResponse> build() {
         return this.dataManager
                 .getProductsAtPage(page)
                 .subscribeOn(newThreadScheduler)

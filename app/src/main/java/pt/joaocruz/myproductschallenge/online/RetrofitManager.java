@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import pt.joaocruz.myproductschallenge.R;
+import pt.joaocruz.myproductschallenge.domain.ProductsResponse;
 import pt.joaocruz.myproductschallenge.domain.TrendProducts;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -33,7 +34,7 @@ public class RetrofitManager implements OnlineDataManager {
     }
 
     @Override
-    public Observable<TrendProducts> getProductsAtPage(int page) {
+    public Observable<ProductsResponse> getProductsAtPage(int page) {
         String apptoken = "this_is_an_app_token";
         String usertoken = "63a12a8116814a9574842515378c93c64846fc3d0858def78388be37e127cd17";
         int storeID = 1;

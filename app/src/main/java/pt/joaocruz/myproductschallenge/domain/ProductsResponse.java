@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class ProductsResponse {
 
     @SerializedName("trend_products")
-    TrendProducts trendProducts;
+    public TrendProducts trendProducts;
 
     public ProductsResponse() {}
 }

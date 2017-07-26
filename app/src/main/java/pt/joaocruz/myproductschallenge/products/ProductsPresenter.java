@@ -1,4 +1,4 @@
-package pt.joaocruz.myproductschallenge.feed;
+package pt.joaocruz.myproductschallenge.products;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import io.reactivex.Observer;
  * Created by jcruz on 26.07.17.
  */
 
-public abstract class FeedPresenter {
+public abstract class ProductsPresenter {
 
     private ArrayList<Observer<?>> observers;
 
@@ -24,5 +24,9 @@ public abstract class FeedPresenter {
             observers = new ArrayList<>();
         return observers;
     }
+
+    public abstract void registerView(ProductsView view);
+    public abstract void loadMore();
+    public abstract void unregisterView();
 
 }

@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class TrendProducts {
 
-    ArrayList<Product> products;
+    public ArrayList<Product> products;
     @SerializedName("number_products")
-    long numberOfProducts;
+    public long numberOfProducts;
     @SerializedName("number_pages")
-    int numberOfPages;
+    public int numberOfPages;
     @SerializedName("current_page")
-    int currentPage;
+    public int currentPage;
 
     public TrendProducts() {}
 }

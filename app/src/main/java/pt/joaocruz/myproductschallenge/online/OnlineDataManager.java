@@ -1,6 +1,7 @@
 package pt.joaocruz.myproductschallenge.online;
 
 import io.reactivex.Observable;
+import pt.joaocruz.myproductschallenge.domain.ProductsResponse;
 import pt.joaocruz.myproductschallenge.domain.TrendProducts;
 
 /**
@@ -9,5 +10,5 @@ import pt.joaocruz.myproductschallenge.domain.TrendProducts;
 
 public interface OnlineDataManager {
 
-    Observable<TrendProducts> getProductsAtPage(int page);
+    Observable<ProductsResponse> getProductsAtPage(int page);
 }
