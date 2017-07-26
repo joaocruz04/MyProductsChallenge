@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyProductsChallenge</string>
+
+    <string name="base_url">https://test4.lesara.de/restapi/v1</string>
+
+
+</resources>
