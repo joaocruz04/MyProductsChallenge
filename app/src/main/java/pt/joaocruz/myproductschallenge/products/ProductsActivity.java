@@ -2,13 +2,8 @@ package pt.joaocruz.myproductschallenge.products;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import java.util.ArrayList;
-
 import javax.inject.Inject;
-
 import pt.joaocruz.myproductschallenge.App;
 import pt.joaocruz.myproductschallenge.R;
 import pt.joaocruz.myproductschallenge.domain.TrendProducts;
@@ -46,7 +41,7 @@ public class ProductsActivity extends AppCompatActivity implements ProductsView 
             recyclerView.setAdapter(adapter);
             recyclerView.addOnScrollListener(scrollListener);
         } else {
-            if (trendProducts.currentPage == trendProducts.numberOfPages-1)
+            if (trendProducts.currentPage >= trendProducts.numberOfPages-1)
                 adapter.setReachedEndOfList();
             adapter.addProducts(trendProducts.products);
             adapter.update();

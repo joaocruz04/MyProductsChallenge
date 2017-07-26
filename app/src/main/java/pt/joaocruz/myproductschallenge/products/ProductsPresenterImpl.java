@@ -4,7 +4,9 @@ import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import pt.joaocruz.myproductschallenge.domain.Product;
 import pt.joaocruz.myproductschallenge.domain.ProductsResponse;
+import pt.joaocruz.myproductschallenge.domain.TrendProducts;
 import pt.joaocruz.myproductschallenge.usecase.GetProductsUseCase;
 
 /**
@@ -21,7 +23,7 @@ public class ProductsPresenterImpl extends ProductsPresenter {
     @Inject
     public ProductsPresenterImpl(GetProductsUseCase productsUseCase) {
         this.productsUseCase = productsUseCase;
-        currentPage = 0;
+        currentPage = 1;
         loading = false;
     }
 
@@ -42,6 +44,8 @@ public class ProductsPresenterImpl extends ProductsPresenter {
             loading = true;
             Observer<ProductsResponse> observer = new Observer<ProductsResponse>() {
 
+                private TrendProducts products;
+
                 @Override
                 public void onSubscribe(Disposable d) {
                     addObserver(d);
@@ -51,12 +55,8 @@ public class ProductsPresenterImpl extends ProductsPresenter {
                 public void onNext(ProductsResponse productsResponse) {
                     if (view != null
                             && productsResponse != null
-                            && productsResponse.trendProducts != null
-                            && productsResponse.trendProducts.products != null
-                            && productsResponse.trendProducts.products.size() > 0) {
-
-                        view.updateWithProducts(productsResponse.trendProducts);
-                        currentPage++;
+                            && productsResponse.trendProducts != null) {
+                        products = productsResponse.trendProducts;
                     }
                 }
 
@@ -65,10 +65,11 @@ public class ProductsPresenterImpl extends ProductsPresenter {
 
                 @Override
                 public void onComplete() {
+                    view.updateWithProducts(products);
+                    currentPage = products.currentPage+1;
                     loading = false;
                 }
             };
-
             productsUseCase.withPage(currentPage).build().subscribe(observer);
         }
 
@@ -77,5 +78,13 @@ public class ProductsPresenterImpl extends ProductsPresenter {
     @Override
     public boolean isLoading() {
         return loading;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public ProductsView getView() {
+        return view;
     }
 }
