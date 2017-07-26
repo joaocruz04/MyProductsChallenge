@@ -44,7 +44,7 @@ public class ProductsPresenterImpl extends ProductsPresenter {
 
                 @Override
                 public void onSubscribe(Disposable d) {
-
+                    addObserver(d);
                 }
 
                 @Override

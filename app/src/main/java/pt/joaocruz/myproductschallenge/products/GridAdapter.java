@@ -5,10 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import pt.joaocruz.myproductschallenge.R;
 import pt.joaocruz.myproductschallenge.domain.Product;
 
@@ -18,10 +16,12 @@ import pt.joaocruz.myproductschallenge.domain.Product;
 
 public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Product> products;
-    private boolean endOfListReached;
     public static final int GRID_ITEM_TYPE = 1;
     public static final int FOOTER_TYPE = 2;
+
+    private ArrayList<Product> products;
+    private boolean endOfListReached;
+
 
     public GridAdapter(ArrayList<Product> products) {
         this.products = products;
@@ -64,7 +64,6 @@ public class GridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.products = new ArrayList<>(products);
         else
             this.products.addAll(products);
-
     }
 
     @Override

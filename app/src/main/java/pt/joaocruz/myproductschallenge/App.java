@@ -9,7 +9,6 @@ import pt.joaocruz.myproductschallenge.dagger.DaggerAppComponent;
 import pt.joaocruz.myproductschallenge.dagger.OnlineServicesModule;
 import pt.joaocruz.myproductschallenge.dagger.PresentersModule;
 import pt.joaocruz.myproductschallenge.dagger.SchedulersModule;
-import pt.joaocruz.myproductschallenge.dagger.UseCaseModule;
 
 /**
  * Created by jcruz on 26.07.17.
@@ -25,13 +24,10 @@ public class App extends Application {
 
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .useCaseModule(new UseCaseModule())
                 .onlineServicesModule(new OnlineServicesModule())
                 .presentersModule(new PresentersModule())
                 .schedulersModule(new SchedulersModule())
                 .build();
-
-
     }
 
 

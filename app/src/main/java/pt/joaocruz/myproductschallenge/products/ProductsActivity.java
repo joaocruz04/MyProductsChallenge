@@ -37,7 +37,7 @@ public class ProductsActivity extends AppCompatActivity implements ProductsView 
     @Override
     public void updateWithProducts(TrendProducts trendProducts) {
         if (adapter==null) {
-            adapter = new GridAdapter(new ArrayList<>(trendProducts.products.subList(0, 10)));
+            adapter = new GridAdapter(trendProducts.products);
             layoutManager = new FooterGridLayoutManager(this, 2, adapter);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.addItemDecoration(new GridAdapter.GridItemDecorator(10)); // Improvement: calculate from dip.
@@ -48,7 +48,7 @@ public class ProductsActivity extends AppCompatActivity implements ProductsView 
         } else {
             if (trendProducts.currentPage == trendProducts.numberOfPages-1)
                 adapter.setReachedEndOfList();
-            adapter.addProducts(trendProducts.products.subList(0,10));
+            adapter.addProducts(trendProducts.products);
             adapter.update();
         }
     }

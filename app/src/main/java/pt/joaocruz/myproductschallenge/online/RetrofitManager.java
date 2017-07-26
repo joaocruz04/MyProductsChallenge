@@ -35,6 +35,8 @@ public class RetrofitManager implements OnlineDataManager {
 
     @Override
     public Observable<ProductsResponse> getProductsAtPage(int page) {
+        // This data should be stored after an app/user login. Since we don't have it
+        // I'll put it here hardcoded
         String apptoken = "this_is_an_app_token";
         String usertoken = "63a12a8116814a9574842515378c93c64846fc3d0858def78388be37e127cd17";
         int storeID = 1;

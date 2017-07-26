@@ -10,7 +10,7 @@ import pt.joaocruz.myproductschallenge.products.ProductsActivity;
  */
 
 @Singleton
-@Component (modules = {AppModule.class, UseCaseModule.class, OnlineServicesModule.class, PresentersModule.class, SchedulersModule.class} )
+@Component (modules = {AppModule.class, OnlineServicesModule.class, PresentersModule.class, SchedulersModule.class} )
 public interface AppComponent {
 
     void inject(ProductsActivity activity);
